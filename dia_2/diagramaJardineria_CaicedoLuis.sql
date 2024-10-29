@@ -988,7 +988,19 @@ select cliente.ciudad , oficina.linea_direccion1 from cliente inner join emplead
 -- Devuelve el nombre de los clientes y el nombre de sus representantes junto con la ciudad de la oficina a la que pertenece el representante.
 select cliente.nombre_cliente , empleado.nombre , oficina.ciudad from cliente inner join empleado on empleado.codigo_empleado = cliente.codigo_empleado_rep_ventas inner join oficina on oficina.codigo_oficina = empleado.codigo_oficina;
 
+-- Devuelve un listado con el nombre de los empleados junto con el nombre de sus jefes.
 
+-- Devuelve un listado que muestre el nombre de cada empleados, el nombre de su jefe y el nombre del jefe de sus jefe.
+
+-- Devuelve el nombre de los clientes a los que no se les ha entregado a tiempo un pedido.
+select cliente.nombre_cliente from pedido inner join cliente on pedido.codigo_cliente = cliente.codigo_cliente where pedido.fecha_esperada < pedido.fecha_entrega;
+
+-- Devuelve un listado de las diferentes gamas de producto que ha comprado cada cliente.
+select distinct cliente.nombre_cliente , producto.gama from pedido inner join detalle_pedido on pedido.codigo_pedido = detalle_pedido.codigo_pedido inner join producto on detalle_pedido.codigo_producto = producto.codigo_producto inner join cliente on cliente.codigo_cliente = pedido.codigo_cliente;
+
+select * from producto;
+select * from detalle_pedido;
+select * from gama_producto;
 select * from cliente;
 select * from pedido;
 select * from oficina;
