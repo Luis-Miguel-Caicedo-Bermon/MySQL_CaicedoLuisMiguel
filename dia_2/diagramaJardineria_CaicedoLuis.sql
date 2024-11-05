@@ -939,6 +939,8 @@ select distinct estado from pedido;
 -- Utilizando la función YEAR de MySQL.
 -- Utilizando la función DATE_FORMAT de MySQL.
 -- Sin utilizar ninguna de las funciones anteriores.
+select distinct codigo_cliente from pago where year(fecha_pago)=2008;
+select distinct codigo_cliente from pago where date_format(fecha_pago,'%Y') = 2008;
 select distinct codigo_cliente from pago where fecha_pago >='2008-01-01' and fecha_pago < '2009-01-01';
 
 -- Devuelve un listado con el código de pedido, código de cliente, fecha esperada y fecha de entrega de los pedidos que no han sido entregados a tiempo.
@@ -949,6 +951,8 @@ select codigo_pedido , codigo_cliente , fecha_esperada , fecha_entrega from pedi
 -- Utilizando la función DATEDIFF de MySQL.
 -- ¿Sería posible resolver esta consulta utilizando el operador de suma + o resta -?
 select codigo_pedido , codigo_cliente , fecha_esperada , fecha_entrega from pedido where adddate(fecha_entrega,2)<=fecha_esperada;
+select codigo_pedido , codigo_cliente , fecha_esperada , fecha_entrega from pedido where datediff(fecha_esperada , fecha_entrega) >= 2;
+select codigo_pedido , codigo_cliente , fecha_esperada , fecha_entrega from pedido where fecha_esperada >= fecha_entrega +2;
 
 -- Devuelve un listado de todos los pedidos que fueron en 2009.
 select * from pedido where fecha_pedido >='2009-01-01' and fecha_pedido < '2010-01-01';
@@ -989,8 +993,10 @@ select cliente.ciudad , oficina.linea_direccion1 from cliente inner join emplead
 select cliente.nombre_cliente , empleado.nombre , oficina.ciudad from cliente inner join empleado on empleado.codigo_empleado = cliente.codigo_empleado_rep_ventas inner join oficina on oficina.codigo_oficina = empleado.codigo_oficina;
 
 -- Devuelve un listado con el nombre de los empleados junto con el nombre de sus jefes.
+select e.nombre , j1.nombre from empleado e inner join empleado j1 on e.codigo_jefe = j1.codigo_empleado;
 
 -- Devuelve un listado que muestre el nombre de cada empleados, el nombre de su jefe y el nombre del jefe de sus jefe.
+select e.nombre , j1.nombre , j2.nombre from empleado e inner join empleado j1 on e.codigo_jefe = j1.codigo_empleado inner join empleado j2 on j1.codigo_jefe = j2.codigo_empleado;
 
 -- Devuelve el nombre de los clientes a los que no se les ha entregado a tiempo un pedido.
 select cliente.nombre_cliente from pedido inner join cliente on pedido.codigo_cliente = cliente.codigo_cliente where pedido.fecha_esperada < pedido.fecha_entrega;
